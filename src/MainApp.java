@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import java.util.Iterator;
 
-public class ToDoList {
+public class MainApp {
     int taskId = 0;
     String taskTitle;
     boolean status;
@@ -13,12 +13,10 @@ public class ToDoList {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
-        ToDoList toDoList = new ToDoList();
+        MainApp MainApp = new MainApp();
         try (Scanner scanner = new Scanner(System.in)) {
-            toDoList.userInfo(scanner);
-            toDoList.yesNoQuestion(scanner);
-            // toDoList.addTask();
-            toDoList.quitApp();
+        //  MainApp.userInfo(scanner);
+            MainApp.AddTask(scanner);
             scanner.close();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
@@ -28,46 +26,43 @@ public class ToDoList {
 
     public void userInfo(Scanner scanner) {
 
-        UserToDoList user = new UserToDoList();
-        
-            try {
-                String name;
-                while (true) {
-                    System.out.println("Hello, welcome to 'ToDoList' app ");
+        User user = new User();
+        System.out.println("Hello, welcome to 'MainApp' app ");
+        try {
+            String name;
+            while (true) {
 
-                    System.out.println("Enter your name: ");
-                    name = scanner.nextLine();
-                    if (!containsDigit(name)) {
-                        break;
-                    }
-                    System.out.println("Invalid name. Name cannot contain digits. Please try again.");
+                System.out.println("Enter your name: ");
+                name = scanner.nextLine();
+                if (!containsDigit(name)) {
+                    break;
                 }
-                user.setName(name);
-
-                int age;
-                while (true) {
-                    System.out.println("Enter your age: ");
-                    String ageString = scanner.nextLine();
-                    if (ageString.matches("\\d+")) {
-                        age = Integer.parseInt(ageString);
-                        break;
-                    }
-                    System.out.println("Invalid age. Age must be a positive integer. Please try again.");
-                }
-                user.setAge(age);
-
-                System.out.println("Hello, " + user.getName() + "! You are " + user.getAge() + " years old.");
-
-            } catch (
-
-            Exception e) {
-                System.out.println("An error occurred: " + e.getMessage());
+                System.out.println("Invalid name. Name cannot contain digits. Please try again.");
             }
+            user.setName(name);
+
+            int age;
+            while (true) {
+                System.out.println("Enter your age: ");
+                String ageString = scanner.nextLine();
+                if (ageString.matches("\\d+")) {
+                    age = Integer.parseInt(ageString);
+                    break;
+                }
+                System.out.println("Invalid age. Age must be a positive integer. Please try again.");
+            }
+            user.setAge(age);
+
+            System.out.println("Hello, " + user.getName() + "! You are " + user.getAge() + " years old.");
+
+        } catch (
+
+        Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
         }
+    }
 
-    
-
-    private void yesNoQuestion(Scanner scanner) {
+    private void AddTask(Scanner scanner) {
         while (true) {
             System.out.println("Do you want to add a new task? Enter y/n: ");
             String userResponse = scanner.nextLine();
@@ -78,7 +73,8 @@ public class ToDoList {
 
                 Task task = new Task(status, taskId, taskTitle);
                 tasks.add(task);
-
+                performUserChoice();
+                break;
             } else if (userResponse.equals("n")) {
                 performUserChoice();
                 break;
@@ -95,7 +91,6 @@ public class ToDoList {
         while (true) {
             System.out.print("Enter the task title: ");
             taskTitle = scanner.nextLine();
-            // scanner.nextLine();
 
             if (!taskTitle.isEmpty()) {
                 break;
@@ -112,23 +107,23 @@ public class ToDoList {
             System.out.println("Enter an id of task: ");
             if (scanner.hasNextInt()) {
                 taskId = scanner.nextInt();
-                scanner.nextLine(); // Consume the newline character left in the buffer
+                scanner.nextLine();
                 break;
             } else {
                 System.out.println("Invalid input. Please enter a valid integer for task ID.");
-                scanner.nextLine(); // Consume the invalid input
+                scanner.nextLine();
             }
         }
         return taskId;
     }
 
     public void displayAllTasks() {
-        System.out.println("\nAll Tasks:");
-        System.out.println("\nAll Tasks: " + tasks.size());
+
+        System.out.println("\nList Size is: " + tasks.size());
 
         for (Task task : tasks) {
             System.out.println(
-                    "Task ID: " + task.getId() + ", Title: " + task.getTask_title() + " Status: " + task.isStatus());
+                    "Task ID: " + task.getId() + "\nTitle: " + task.getTask_title() + " \nStatus: " + task.isStatus());
         }
     }
 
@@ -139,7 +134,7 @@ public class ToDoList {
         while (!correctID) {
             System.out.println("Enter an ID of the task you want to delete: ");
             int chosenID = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character left in the buffer
+            scanner.nextLine();
 
             Iterator<Task> iterator = tasks.iterator();
             while (iterator.hasNext()) {
@@ -170,11 +165,11 @@ public class ToDoList {
         boolean correctID = false;
 
         while (!correctID) {
-            int changedId = -1; // Initialize to an invalid value
+            int changedId = -1;
             try {
                 System.out.println("Enter an ID of the task you want to change the status of: ");
                 changedId = scanner.nextInt();
-                scanner.nextLine(); // Consume the newline character left in the buffer
+                scanner.nextLine();
 
                 for (Task task : tasks) {
                     if (task.getId() == changedId) {
@@ -191,7 +186,7 @@ public class ToDoList {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid task ID.");
-                scanner.nextLine(); // Consume the invalid input to prevent an infinite loop
+                scanner.nextLine();
             }
         }
     }
@@ -211,28 +206,34 @@ public class ToDoList {
         while (!validChoice) {
             System.out
                     .println(
-                            "Do you want to display all tasks or mark as completed? Enter 'display' or 'complete' or 'add task' or 'quit' or 'delete': ");
+                            " Choose an action: \n'display tasks'\n'complete task'\n'add task'\n'delete task'\n'quit app': ");
             String choice = scanner.nextLine();
 
-            if (choice.equals("display")) {
+            if (choice.equals("display tasks")) {
                 displayAllTasks();
                 validChoice = true;
-            } else if (choice.equals("complete")) {
+            } else if (choice.equals("complete task")) {
                 markAsCompletedTask(taskId);
                 validChoice = true;
-            } else if (choice.equals("quit")) {
+
+            } else if (choice.equals("add task")) {
+                AddTask(scanner);
+                validChoice = true;
+
+            } else if (choice.equals("delete task")) {
+                removeTask(taskId);
+                validChoice = true;
+            } else if (choice.equals("quit app")) {
                 quitApp();
                 validChoice = true;
-            } else if (choice.equals("add task")) {
-                yesNoQuestion();
-                validChoice = true;
-
-            } else if (choice.equals("delete")) {
-                removeTask(taskId);
-                validChoice = true; // Break the loop if a valid choice is entered
 
             } else {
-                System.out.println("Invalid choice, type 'display' or 'complete'.");
+                System.out.println("Invalid choice,  Choose an action: \\n" + //
+                        "'display tasks'\\n" + //
+                        "'complete task'\\n" + //
+                        "'add task'\\n" + //
+                        "'delete task'\\n" + //
+                        "'quit app':");
             }
         }
     }
@@ -243,16 +244,15 @@ public class ToDoList {
 
         while (!validInput) {
             System.out.println("Do you want to quit the app? Enter y or n: ");
-            String quitChoice = scanner.nextLine().toLowerCase(); // Convert the input to lowercase for case-insensitive
-                                                                  // comparison
-
+            String quitChoice = scanner.nextLine().toLowerCase();
             if (quitChoice.equals("y")) {
-                System.out.println("Exiting the app");
-                validInput = true; // Set validInput to true to exit the loop
+                validInput = true;
+                System.out.println("Exiting the app \nHave a productive day!");
                 break;
+
             } else if (quitChoice.equals("n")) {
                 System.out.println("Continuing the app");
-                validInput = true; // Set validInput to true to exit the loop
+                validInput = true;
                 performUserChoice();
             } else {
                 System.out.println("Invalid input. Please enter y or n.");

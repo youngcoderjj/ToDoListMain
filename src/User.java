@@ -1,4 +1,4 @@
-public class UserToDoList {
+public class User {
     private String name;
 
     public String getName() {
@@ -20,11 +20,11 @@ public class UserToDoList {
     }
 
     // name of constuctor must be the same as the class
-    public UserToDoList(String name, int age) {
+    public User(String name, int age) {
         this.name = name;
         this.age = age;
     }
-     public UserToDoList() {
+     public User() {
       
     }
 
