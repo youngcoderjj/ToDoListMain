@@ -15,7 +15,7 @@ public class MainApp {
     public static void main(String[] args) throws Exception {
         MainApp MainApp = new MainApp();
         try (Scanner scanner = new Scanner(System.in)) {
-        //  MainApp.userInfo(scanner);
+            MainApp.userInfo(scanner);
             MainApp.AddTask(scanner);
             scanner.close();
         } catch (Exception e) {
@@ -64,7 +64,7 @@ public class MainApp {
 
     private void AddTask(Scanner scanner) {
         while (true) {
-            System.out.println("Do you want to add a new task? Enter y/n: ");
+            System.out.println("\nDo you want to add a new task? Enter y/n: ");
             String userResponse = scanner.nextLine();
 
             if (userResponse.equals("y")) {
@@ -73,8 +73,12 @@ public class MainApp {
 
                 Task task = new Task(status, taskId, taskTitle);
                 tasks.add(task);
+
+                System.out.println("You've added task with id: " + taskId + " \nTitle is: " + taskTitle);
+
                 performUserChoice();
                 break;
+
             } else if (userResponse.equals("n")) {
                 performUserChoice();
                 break;
@@ -125,6 +129,8 @@ public class MainApp {
             System.out.println(
                     "Task ID: " + task.getId() + "\nTitle: " + task.getTask_title() + " \nStatus: " + task.isStatus());
         }
+        performUserChoice();
+
     }
 
     public void removeTask(int taskId) {
@@ -206,7 +212,7 @@ public class MainApp {
         while (!validChoice) {
             System.out
                     .println(
-                            " Choose an action: \n'display tasks'\n'complete task'\n'add task'\n'delete task'\n'quit app': ");
+                            " \nChoose an action: \n'display tasks'\n'complete task'\n'add task'\n'delete task'\n'quit app': ");
             String choice = scanner.nextLine();
 
             if (choice.equals("display tasks")) {
@@ -228,7 +234,7 @@ public class MainApp {
                 validChoice = true;
 
             } else {
-                System.out.println("Invalid choice,  Choose an action: \\n" + //
+                System.out.println("\nInvalid choice,  Choose an action: \\n" + //
                         "'display tasks'\\n" + //
                         "'complete task'\\n" + //
                         "'add task'\\n" + //
@@ -243,19 +249,19 @@ public class MainApp {
         boolean validInput = false;
 
         while (!validInput) {
-            System.out.println("Do you want to quit the app? Enter y or n: ");
+            System.out.println("\nDo you want to quit the app? Enter y or n: ");
             String quitChoice = scanner.nextLine().toLowerCase();
             if (quitChoice.equals("y")) {
                 validInput = true;
-                System.out.println("Exiting the app \nHave a productive day!");
+                System.out.println("\nExiting the app \nHave a productive day!");
                 break;
 
             } else if (quitChoice.equals("n")) {
-                System.out.println("Continuing the app");
+                System.out.println("\nContinuing the app");
                 validInput = true;
                 performUserChoice();
             } else {
-                System.out.println("Invalid input. Please enter y or n.");
+                System.out.println("\nInvalid input. Please enter y or n.");
             }
         }
 
